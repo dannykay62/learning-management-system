@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { useEffect } from 'react';
 
 function FavoriteCourses() {
+    useEffect(() => {
+        document.title = 'Favorite Courses';
+    });
     return(
         <div className='container mt-4'>
             <div className='row'>

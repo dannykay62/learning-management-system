@@ -1,6 +1,31 @@
-import { Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useState,useEffect } from "react";
+import axios from "axios";
+
+const baseurl = 'http://127.0.0.1:8000/api'
 
 function TeacherDetail() {
+    const [teacherData, setTeacherData]=useState([]);
+    const [courseData, setcourseData]=useState([]);
+    const [skillList, setSkillList]=useState([]);
+
+    const {teacher_id} = useParams();
+
+    useEffect(() => {
+        const fetchTeacherData = async () => {
+            try {
+                axios.get(`${baseurl}/teachers/${teacher_id}/`).then((res) => {
+                    setTeacherData(res.data);
+                    setcourseData(res.data.teacher_courses);
+                    setSkillList(res.data.skill_list);
+                });
+            } catch(error) {
+                console.log(error);
+            }
+        };
+        fetchTeacherData();
+        
+    },[teacher_id]);
     return(
         <div className="container mt-4">
             <div className="row">
@@ -8,37 +33,29 @@ function TeacherDetail() {
                     <img src="/logo512.png" className="img-thumbnail" alt="Teacher" />
                 </div>
                 <div className="col-8">
-                    <h3>Daniel Adejoro</h3>
-                    <p>Bootstrap sets basic global display, typography, and link styles. When more control is needed, check out the textual utility classes.
-
-                        Use a native font stack that selects the best font-family for each OS and device.
-                        For a more inclusive and accessible type scale, we use the browser’s default root font-size (typically 16px) so visitors can customize their browser defaults as needed.
-                        Use the $font-family-base, $font-size-base, and $line-height-base attributes as our typographic base applied to the.
-                        Set the global link color via $link-color.
-                        Use $body-bg to set a background-color on the  (#fff by default).
-
-                        These styles can be found within _reboot.scss, and the global variables are defined in _variables.scss. Make sure to set $font-size-base in rem.
+                    <h3>{teacherData.full_name}</h3>
+                    <p>{teacherData.bio}
                     </p>
-                    <p className="fw-bold">Skills: <Link to="/teacher-detail/1">Music</Link>,&nbsp;<Link to="/teacher-detail/1">Programming</Link>,&nbsp;
-                    <Link to="/teacher-detail/1">Dance</Link></p>
+                    <p className="fw-bold">Skills: &nbsp;
+                        {skillList.map((skill, index) =>
+                        <Link to={`/teacher-skill-courses/${skill.trim()}/${teacherData.id}`} className="badge badge-pill text-dark bg-warning ml-2">{skill.trim()}</Link>
+                      )}
+                    </p>
                     <p className="fw-bold">Recent Course: <Link to='course_title'>Dance with me</Link></p>
                     <p className="fw-bold">Rating: 4/5</p>
                 </div>
             </div>
 
-            {/* Course Videos */}
+            {/* Teacher Courses */}
             <div className="card">
               <h5 className="card-header">
                 Course List
               </h5>
-              <Link to='/details/1' className="list-group-item list-group-item-action">English Course</Link>
-              <Link to='/details/1' className="list-group-item list-group-item-action">JAMB Course</Link>
-              <Link to='/details/1' className="list-group-item list-group-item-action">Music Course</Link>
-              <Link to='/details/1' className="list-group-item list-group-item-action">Fashion Course</Link>
-              <Link to='/details/1' className="list-group-item list-group-item-action">Farming Course</Link>
-              <Link to='/details/1' className="list-group-item list-group-item-action">Gaming Course</Link>
+              {courseData.map((course,index) =>
+                <Link to={`/details/${course.id}/`} className="list-group-item list-group-item-action">{course.title}</Link>
+              )}
             </div>
-            {/* End Course Videos */}
+            {/* End Teacher Courses */}
         </div>
     );
 }

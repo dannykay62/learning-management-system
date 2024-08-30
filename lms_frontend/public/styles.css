@@ -1,0 +1,7 @@
+
+
+.card-img-top-cust {
+    width: 100%;
+    height: 200px; /* Set the height you want */
+    object-fit: cover;
+  }

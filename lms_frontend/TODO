@@ -1,0 +1,12 @@
+import 'react-image-crop/dist/ReactCrop.css';
+import ReactCrop from 'react-image-crop';
+
+
+
+<label for="category" className="form-label">Category</label>
+
+<select name="category" value={courseData.category} onChange={handleChange} className='form-control'> 
+
+{cats.map((category,index)=>{return <option key={index} value={category.id}>{category.title}</option>})}
+
+</select>

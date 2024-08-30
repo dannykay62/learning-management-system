@@ -1,10 +1,12 @@
 import {Link} from 'react-router-dom';
 
 function Home() {
+  const teacherLoginStatus = localStorage.getItem('teacherLoginStatus')
+  const studentLoginStatus = localStorage.getItem('studentLoginStatus')
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
-          <Link className="navbar-brand pb-3 pt-3" to="/">Learn</Link>
+          <Link className="navbar-brand mt-2 mb-2 pb-3 pt-3" to="/">Learn</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -14,10 +16,10 @@ function Home() {
                 <Link className="nav-link active" aria-current="page" to="/">Home</Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Categories</a>
+                <a className="nav-link" href="/category/1">Categories</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="#">Courses</a>
+                <Link className="nav-link" to="/all-courses">Courses</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/about">About Us</Link>
@@ -27,15 +29,27 @@ function Home() {
                 Teacher
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li className="nav-item">
-                    <Link className="dropdown-item" to="/teacher-login">Login</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="dropdown-item" to="/teacher-register">Register</Link>
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li><Link class="dropdown-item" to="/teacher-dashboard">Dashboard</Link></li>
-                  <li><a class="dropdown-item" href="teacher-logout">Logout</a></li>
+                  {/* Hide Dashboard and Logout menu if user is not logged in */}
+                  {teacherLoginStatus ==='true' &&
+                    <>
+                      <li><Link class="dropdown-item" to="/teacher-dashboard">Dashboard</Link></li>
+                      <li><Link class="dropdown-item" to="teacher-logout">Logout</Link></li>
+                    </>
+                  }
+                  {/* Hide Login and Register menu if logged in */}
+                  {teacherLoginStatus !='true' &&
+                  <>
+                    <li className="nav-item">
+                      <Link className="dropdown-item" to="/teacher-login">Login</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="dropdown-item" to="/teacher-register">Register</Link>
+                    </li>
+                  </>
+                  }
+                  {/* End Hide login and Regiater */}
+                  {/* <li><hr class="dropdown-divider" /></li> */}
+                  
                 </ul>
               </li>
               
@@ -44,15 +58,27 @@ function Home() {
                   User
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li className="nav-item">
-                    <Link className="dropdown-item" to="/user-login">Login</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="dropdown-item" to="/user-register">Register</Link>
-                  </li>
-                  <li><hr class="dropdown-divider" /></li>
-                  <li><Link class="dropdown-item" to="/user-dashboard">Dashboard</Link></li>
-                  <li><a class="dropdown-item" href="user-logout">Logout</a></li>
+                  {/* Hide Dashboard and Logout menu if user is not logged in */}
+                  {studentLoginStatus ==='true' &&
+                    <>
+                      <li><Link class="dropdown-item" to="/user-dashboard">Dashboard</Link></li>
+                      <li><Link class="dropdown-item" to="/user-logout">Logout</Link></li>
+                    </>
+                  }
+                  {/* Hide Login and Register menu if logged in */}
+                  {studentLoginStatus !='true' &&
+                  <>
+                    <li className="nav-item">
+                      <Link className="dropdown-item" to="/user-login">Login</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="dropdown-item" to="/user-register">Register</Link>
+                    </li>
+                  </>
+                  }
+                  {/* End Hide login and Regiater */}
+                  {/* <li><hr class="dropdown-divider" /></li> */}
+                  
                 </ul>
               </li>
             </ul>
@@ -62,4 +88,4 @@ function Home() {
     );
   }
   
-  export def
+  export default Home;
